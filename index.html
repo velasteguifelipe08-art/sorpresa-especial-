@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Una sorpresa para ti</title>
+<style>
+:root {
+  --site-primary: #9c2948;
+  --site-on-primary: #ffffff;
+  --site-secondary: #f5dce7;
+  --site-on-secondary: #572438;
+  --site-background: #dff5fb;
+  --site-on-background: #422b39;
+  --site-font-body: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --site-font-heading: Georgia, "Times New Roman", serif;
+  --site-heading-scale: 1;
+  --site-spacing-scale: 1;
+  --site-radius-scale: 1;
+  --site-decoration-opacity: 1;
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: var(--site-font-body); background: var(--site-background); color: var(--site-on-background); }
+#app { min-height: 100svh; width: 100%; position: relative; overflow: hidden; display: grid; place-items: center; padding: 22px; background-color: var(--site-background); }
+.card { width: min(100%, 620px); min-height: 560px; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: calc(38px * var(--site-spacing-scale)) calc(24px * var(--site-spacing-scale)); border: 3px solid #7c4258; border-radius: calc(28px * var(--site-radius-scale)); outline: 2px solid #7c4258; outline-offset: 7px; background: rgba(255,255,255,.32); box-shadow: 0 14px 36px rgba(65,54,69,.10); }
+.card:before, .card:after { content: "〰〰〰〰〰〰〰〰〰〰〰〰"; position: absolute; color: #7c4258; font-size: 21px; letter-spacing: 1px; opacity: var(--site-decoration-opacity); }
+.card:before { top: 9px; left: 10px; right: 10px; }
+.card:after { bottom: 9px; left: 10px; right: 10px; }
+.corner { position: absolute; font-size: 58px; opacity: var(--site-decoration-opacity); }
+.corner.left { top: 10px; left: 12px; transform: rotate(-18deg); }
+.corner.right { right: 12px; bottom: 18px; }
+.emoji { font-size: clamp(76px, 20vw, 112px); line-height: 1.2; margin: 10px 0 12px; }
+h1 { font-family: var(--site-font-heading); font-size: calc(clamp(25px, 6vw, 34px) * var(--site-heading-scale)); color: #54243b; margin: 8px 0 12px; }
+p { font-size: 17px; line-height: 1.55; max-width: 420px; margin: 0 auto 20px; }
+.buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 13px; }
+button { border: 0; border-radius: 999px; padding: 13px 24px; font: 600 16px var(--site-font-body); cursor: pointer; transition: transform .15s ease, filter .15s ease; }
+button:active { transform: scale(.97); }
+.primary { background: var(--site-primary); color: var(--site-on-primary); box-shadow: 0 5px 0 #6e2038; }
+.secondary { background: var(--site-secondary); color: var(--site-on-secondary); border: 1px solid #d8aabc; }
+.hidden { display: none; }
+.note { margin-top: 20px; font-size: 13px; opacity: .75; }
+@media (max-width: 420px) { .card { min-height: 510px; padding: 30px 18px; } .corner { font-size: 44px; } }
+</style>
+</head>
+<body>
+<main id="app">
+  <section class="card" aria-live="polite">
+    <div class="corner left" aria-hidden="true">🎀</div>
+    <div class="corner right" aria-hidden="true">💐</div>
+    <div id="start">
+      <div class="emoji" aria-hidden="true">🐶</div>
+      <h1>¡Tengo algo que preguntarte!</h1>
+      <p>Desde que te conocí, sentí que eras la indicada para mí. Poco a poco te volviste alguien muy especial, y hoy quiero decirte cuánto cariño te tengo. 💗</p>
+      <div class="buttons"><button class="primary" id="open">Descubrir sorpresa 💌</button></div>
+    </div>
+    <div id="question" class="hidden">
+      <div class="emoji" aria-hidden="true">🌷</div>
+      <h1 id="greeting">¿Quieres ser alguien especial en mi vida?</h1>
+      <p>Quiero cuidarte, apoyarte y compartir contigo muchos momentos bonitos. Desde que llegaste, mi vida tiene una alegría especial. ✨</p>
+      <div class="buttons">
+        <button class="primary" id="yes">¡Sí! 💖</button>
+        <button class="secondary" id="no">No 🙈</button>
+      </div>
+    </div>
+    <div id="yesPage" class="hidden">
+      <div class="emoji" aria-hidden="true">💖</div>
+      <h1>¡Sabía que dirías que sí!</h1>
+      <p>Gracias por darme esta alegría. Desde que te conocí pensé que eras la indicada para mí, y me encantaría crear contigo recuerdos llenos de cariño, respeto y sonrisas. ❤️</p>
+      <button class="primary" id="again">Volver a empezar</button>
+    </div>
+    <div id="noPage" class="hidden">
+      <div class="emoji" aria-hidden="true">🐾</div>
+      <h1>¡¿Cómo te atreves?!</h1>
+      <p>Jajaja, era una sorpresa. Puedes pensarlo otra vez. 💗</p>
+      <button class="primary" id="back">Volver</button>
+    </div>
+    <div class="note">Hecho con cariño ♡</div>
+  </section>
+</main>
+<script>
+const pages = ['start', 'question', 'yesPage', 'noPage'];
+function show(id) { pages.forEach(page => document.getElementById(page).classList.toggle('hidden', page !== id)); }
+document.getElementById('open').addEventListener('click', () => {
+  document.getElementById('greeting').textContent = '¿Quieres ser alguien especial en mi vida?';
+  show('question');
+});
+document.getElementById('yes').addEventListener('click', () => show('yesPage'));
+document.getElementById('no').addEventListener('click', () => show('noPage'));
+document.getElementById('back').addEventListener('click', () => show('question'));
+document.getElementById('again').addEventListener('click', () => show('start'));
+</script>
+</body>
+</html>
